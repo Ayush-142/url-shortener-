@@ -10,6 +10,14 @@ const urls: { [key: string]: string } = {};
 
 app.post('/api/shorten', (req, res) => {
   const { url } = req.body;
+  
+  // Validate URL
+  try {
+    new URL(url);
+  } catch {
+    return res.status(400).json({ error: 'Invalid URL' });
+  }
+  
   const shortCode = Math.random().toString(36).substring(7);
   urls[shortCode] = url;
   res.json({ shortCode, shortUrl: `http://localhost:3000/${shortCode}` });
@@ -28,6 +36,6 @@ app.get('/api/urls', (req, res) => {
   res.json(urls);
 });
 
-app.listen(3000, () => {
-  console.log('✅ API running on http://localhost:3000');
+app.listen(5000, () => {
+  console.log('✅ API running on http://localhost:5000');
 });
